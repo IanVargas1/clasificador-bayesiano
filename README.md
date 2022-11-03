@@ -1,7 +1,9 @@
-# Instituto Tecnológico de Costa Rica      Principios De Sistemas Operativos
-# Proyecto II                                             Grupo 50
-## Elison Corrales Vargas - Ian Vargas Ledezma - Jean Carlos Urbina - Steven Alvarado Aguilar
-## Programación de categorizador de páginas web utilizando el teorema de Bayes
+<h1 align="center">Instituto Tecnológico de Costa Rica</h1>
+<h1 align="center">Principios De Sistemas Operativos</h1>
+<h1 align="center">Proyecto II Grupo 50</h1>
+<h2 align="center">Elison Corrales Vargas - Ian Vargas Ledezma - Jean Carlos Urbina - Steven Alvarado Aguilar</h2>
+<h2 align="center">Programación de categorizador de páginas web utilizando el teorema de Bayes</h2>
+
 El teorema de Bayes es utilizado para calcular la probabilidad de un suceso, teniendo información de antemano sobre ese suceso. Podemos calcular la probabilidad de un suceso A, sabiendo además que ese A cumple cierta característica que condiciona su probabilidad. El teorema de Bayes entiende la probabilidad de forma inversa al teorema de la probabilidad total. (J. F. López, 2021). 
 
 Para la creación de este proyecto usaremos el lenguaje de programación Python y utilizaremos una base de datos en Postgresql  en ella desde Python le enviamos los diferentes urls que el programa encuentra según el código programado y busca las palabras según las clasificaciones que creamos y que más adelante vamos a explicar de mejor manera. En el proyecto implementamos las clases Bayes, Conexión, funcionespostgres y webScraping las cuáles tendrán la codificación necesaria para lograr que el proyecto cumpla con todos los requerimientos explicados por el profesor.
@@ -213,9 +215,6 @@ El método bayes es el que realiza la función principal de este proyecto aquí 
     - Solicitamos la función verificarLis dónde se reciben las dos listas con las palabras clave y las 10 palabras para ser buscadas en paralelo en un y otra lista, aquí pasan dos acciones:
         + Si la palabra se encontró en ListaC1 se retorna un 1 
         + Si la palabra se encontró en ListaC1 se retorna un 2
-
-![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture23.png)
-
     - Con la variable que creamos para guardar el resultado de búsqueda hacemos lo siguiente, preguntamos si el retorno de la función en paralelo es 1 o 2, como la función Map devuelve una lista con los resultados de las 10 palabras, debe recorrer la variable resultado para ver quienes son de retorno 1 y quienes del 2. Seguidamente preguntamos dos cosas:
         + Si el retorno es 1: Se aumenta la variable cantD +1 
         + Si el retorno es 2: Se aumenta la variable cantS +1 
