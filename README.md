@@ -19,18 +19,23 @@ Buscamos en internet una página web que tenga un listado de palabras relacionad
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture1.png)
 
 Además se creó el método consultar categoría, este sirve para consultar las palabras clave de una categoría en específica, con el fin de almacenar todas las palabras clave en una estructura de datos de tal manera automatizar el hecho de no estar haciendo múltiples peticiones a la base de datos, con esta lista podemos prepararnos para el teorema bayesiano. 
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture2.png)
 
 Creamos otro método llamado consultar no tiene ningún parámetro, debido a que una consulta donde se abre la conexión y el cursor y se ejecuta los datos de la tabla seleccionada y en la cual se va a recorrer los diferentes datos consultados y los mostraremos, luego de todo esto se cerrará tanto el cursor y la conexión. La función principal es corroborar que los elementos si se están insertando en la tabla, como un punto adicional este método podría ser dinámico de manera que podamos insertar una categoría cualquiera y devuelva el mismo resultado, en este caso únicamente consultamos la categoría deportes.
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture3.png)
 
 Creamos el método de eliminar el cuál abrimos la conexión y el cursor ejecutamos la función de eliminar todos los datos de la base de datos, hacemos un commit para confirmar la transacción pendiente en la base de datos, esta función tiene como objetivo vaciar la tabla en la base de datos únicamente si se necesitara la reinserción en algun momento, al igual que la anterior este método podría ser genérico para poder ser utilizado con cualquier tabla.
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture4.png)
 
 Creamos un método para insertar los resultados que obtengamos de el WebScraping aplicado a una lista de links en la base de datos, en este caso se pidió un total de 10.000 links para realizar el web scraping, la función que inserta estos resultados es la siguiente:
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture5.png)
 
 Además se creó un método para obtener los resultados y almacenarlos en una estructura de datos tipo lista, de esta forma evitamos realizar el WebScraping cada vez que se ejecute el programa, a sí mismo se realizó otro método para eliminar estos resultados de ser necesario la reinserción.
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture6.png)
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture7.png)
 
@@ -40,6 +45,7 @@ Finalmente se crean dos funciones de suma importancia para la interfaz gráfica 
 3. La categoría 
 4. La lista de palabras de la categorización 1 con la cantidad de repeticiones por palabra.
 5. La lista de palabras de la categorización 2 con la cantidad de repeticiones por palabra.
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture8.png)
 
 Para la clase webScraping se requieren algunas importaciones importantes, primero necesitamos conectarnos a la base de datos donde están almacenados los url a consultar, para esto realizamos una petición a la clase conexion donde realizaremos una nueva conexión a la base de datos para realizar la consulta de petición de urls (import Conexion),  seguidamente una vez obtenemos el resultado del query se nos pidió realizar el primer nivel de multiprocesamiento para consultar cada página y realizar el web scraping, en este nivel se requiere el uso de la librería BeautifulSoup de bs4(from bs4 import BeautifulSoup) y la librería requests(import requests) además para realizar el multiprocesamiento se requiere la librería  ThreadPoolExecutor la cual nos permite crear threads para multiprocesamiento(from concurrent.futures import  ThreadPoolExecutor)
@@ -57,6 +63,7 @@ El método extraer es la función más importante en este procedimiento ya que e
 3. Se parsea la con BeautifulSoup para obtener el contenido en formato html 
 4. Se establecen las etiquetas de parseo para desechar lo innecesario, en este caso solicitados todos los "p", "span" y "h1", adicionalmente podemos solicitar los "strong" que también típicamente tienen texto. 
 5. Se crea un string con esa información y se agregan a una lista global la cual serán los resultados finales del WebScraping, esta lista guarda sublistas con el url y la sublista de palabras obtenidas del parseo. 
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture10.png)
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture9.png) 
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture11.png)
@@ -97,17 +104,18 @@ luego en el entorno virtual se instalan las demás dependencias
 Ahora para levantar el servidor y correr la aplicación se ejecuta 
 > python .\app\app.py
 
-Importante: siempre ejecutar la línea que levanta el servidor en el entorno virtual ya que sino no tendría las dependencias necesarias.
+**Importante:** siempre ejecutar la línea que levanta el servidor en el entorno virtual ya que sino no tendría las dependencias necesarias.
+
 **Nota: cuando ocurren errores en el código se cae el servidor entonces tenemos que volver a correr la línea >python .\app\app.py  en el entorno virtual.**
 
 Después tenemos que verificar las importaciones necesarias, primero se requiere obtener la lista global que creamos en la clase anterior ya que aqui esta toda la información de los sitios web junto con sus html, por lo tanto necesitamos importar la clase webScraping(import webScraping) además debemos hacer uso de las funciones que nos conectan a la base de datos para obtener la lista de las palabras clave a utilizar en el teorema, por lo tanto necesitaremos importar funciones postgres(import funcionespostgres) finalmente como acá se realiza el segundo nivel de multiprocesamiento requerimos importar otra librería para multiproceso, esta vez Pool (from multiprocessing import Pool).
 
 Creamos un método llamado cargar, este método se encarga de obtener la lista global de la clase WebScraping y también corrige algunos errores que explicaremos a continuación, esto es el procedimiento del método:
 * Solicita ejecutar el WebScraping de los links 
-* Solicita la lista obtenida que se guarda globalmente en la clase 
-
-recorre esa lista para corregir errores: Los errores que podemos presentar es que al obtener el html completo de una página, tenemos demasiada información que no se utilizará, como algunos símbolos “<” y “>”, “//”, “\\”, “.”, “,”, “:”, “;”, “‘”, “\n” y muchos otros que en este procedimientos son eliminados para mejorar la precisión de las palabras y evitar las solicitudes extras a la base de datos de palabras clave. 
+* Solicita la lista obtenida que se guarda globalmente en la clase
+* recorre esa lista para corregir errores: Los errores que podemos presentar es que al obtener el html completo de una página, tenemos demasiada información que no se utilizará, como algunos símbolos “<” y “>”, “//”, “\\”, “.”, “,”, “:”, “;”, “‘”, “\n” y muchos otros que en este procedimientos son eliminados para mejorar la precisión de las palabras y evitar las solicitudes extras a la base de datos de palabras clave. 
 * Se solicita la función de postgres insertar Resultado para meter los links junto con las palabras arregladas en la tabla resultados.
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture13.png)
 
 Una vez ejecutamos el método cagar, no necesitaremos ejecutarlo otra vez ya que la información optimizada ya está en la base de datos por lo cual no necesitamos solicitar un segundo WebScraping. Seguidamente realizamos procedimientos de forma global para guardar la información de la base de datos, los pasos son los siguientes:
@@ -116,7 +124,9 @@ Una vez ejecutamos el método cagar, no necesitaremos ejecutarlo otra vez ya que
     - Recorrer la lista de resultados
     - Realizar el split a la sublista donde esta el string del html de cada url
     - Guardar esta segmentación en la lista nueva
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture14.png)
+
 * Seguidamente conocemos ya las url y sus respectivas palabras segmentadas, pero no conocemos la cantidad de repeticiones de cada palabra, por lo cual necesitaremos contar estas palabras de la siguiente manera 
     - Se crea una lista definitiva global 
     - Se recorre la lista de palabras segmentada, la que creamos anteriormente(listaPalabras)
@@ -124,10 +134,14 @@ Una vez ejecutamos el método cagar, no necesitaremos ejecutarlo otra vez ya que
     -  Creamos una tupla que contiene la palabra y el número de repeticiones obtenidos de la lista frecuencia, como lista de frecuencia y lista palabras por link tienen el mismo len, podemos hacer uso de la función zip para realizar la tupla correspondiente a cada palabra con su respectiva frecuencia 
     - Realizamos un segundo recorrido porque necesitamos quitar las repeticiones de las palabras, ya que sería ilógico que guardaramos la misma tupla varias veces. 
         + Ejemplo: En el html se recolectó la palabra “fútbol” y se obtuvo una frecuencia de 2, la tupla generada es la siguiente (‘fútbol’, 2) pero como hay 2 repeticiones solo necesitamos guardar una tupla. 
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture15.png)
+
 Creamos un método para imprimir la lista definitiva para verificar que los arreglos se realizan correctamente.
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture16.png)
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture17.png)
+
 Seguidamente explicaremos el método sacarProbabilidadPrevia, este método es el que obtiene la historia de los links totales en la lista definitiva, de esta manera podemos obtener un universo, una cantidad de links para categoría 1 y otra para categoría 2, el procedimiento del método es el siguiente:
 * Se guardan las palabras claves en dos listas, una para categoría 1 y otra para la categoría 2, estas variables hacen uso de la funcion consultar categoría de la clase funncionesposgrest 
 * Se crea una variable que será el len de la lista definitiva, esta variable nos servirá como universo para aplicar el teorema de bayes. 
@@ -155,6 +169,7 @@ Seguidamente explicaremos el método sacarProbabilidadPrevia, este método es el
     - palabras c1: Tiene las palabras que se obtuvieron de LD con su respectiva frecuencia.
     - palabras c2:  Tiene las palabras que se obtuvieron de LS con su respectiva frecuencia.
     - palabras c2:  Tiene las palabras que se obtuvieron de LS con su respectiva frecuencia.
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture18.png)
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture19.png)
 
@@ -172,9 +187,11 @@ El método bayes es el que realiza la función principal de este proyecto aquí 
 * Se realiza el webScraping solicitando la función extraer, al ejecutar esta función el resultado se guarda en la lista global en la posición 0 por lo tanto para obtener la lista del URL y las palabras de ese mismo nada más solicitamos el índice cero de la lista global de esta manera ya tenemos el html del nuevo URL, sin embargo si recordamos aún tenemos que corregir y segmentar este resultado para optimizar la búsqueda en las palabras clave, por lo tanto se implementan dos métodos 
     - corregir Lista
     - Segmentar Lista
+ 
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture20.png)
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture21.png)
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture22.png)
+
 * Una vez segmentada y corregida la lista de palabras de nuestro nuevo URL la guardamos y generamos dos variables para contar cada palabra encontrada en la base de datos de las palabras clave:
     - cantD: Almacena la cantidad de palabras encontradas en la categoría 1
     - cantS: Almacena la cantidad de palabras encontradas en la categoría 2
@@ -187,24 +204,30 @@ El método bayes es el que realiza la función principal de este proyecto aquí 
         + Palabra4 = ListaWords [ i + 4 ] 
         + ...
         + Palabra10 = ListaWords [ i + 9] 
-**Nota: Debemos meter estas asignaciones dentro de un try debido a que si la función intenta asignar una palabra pero ya se terminaron las palabras de la lista está el método no devuelva un error de indexación.**
+
+    **Nota: Debemos meter estas asignaciones dentro de un try debido a que si la función intenta asignar una palabra pero ya se terminaron las palabras de la lista está el método no devuelva un error de indexación.**
+
     - Creamos una variable para guardar el resultado de la busqueda, aquí realizamos el paralelismo enviando las 10 palabras a consultar de una vez al método verificarLis , mediante el uso de la librería Pool, el método map nos permite enviar subprocesos a una función específica de tal modo que las acciones se hagan a esos objetos al mismo tiempo, este método es más eficiente que los hilos ya que utiliza subprocesos. Lo que se va a hacer acá es lo siguiente:
         + llamar al método map donde sus parámetros son, la función a ejecutar y la lista de objetos, en este caso lo que vamos a hacer es preguntar cuáles palabras de las 10 que enviamos están en la lista de palabras clave de categoría 1 y 2, si alguna de estas es hallada en categoría 1 devuelve un 1 y si se encuentra en la 2 devuelve un 2, las que devuelven None no se encuentran en el diccionario de palabras clave.
         + Sin embargo necesitamos que la función sepa donde buscar estas palabras clave por lo tanto necesitamos enviar las listas con las palabras clave de categoría 1 y 2, acá debemos tener en consideración la librería partial(from functools import partial) la cual nos permite realizar el llamado de una función de multiproceso de tipo map con múltiples argumentos, los cuales no  son afectados por el proceso sino que se envían solo para comprobar las palabras, en este caso enviamos las dos listas de palabras clave de categoría 1 y 2.
     - Solicitamos la función verificarLis dónde se reciben las dos listas con las palabras clave y las 10 palabras para ser buscadas en paralelo en un y otra lista, aquí pasan dos acciones:
         + Si la palabra se encontró en ListaC1 se retorna un 1 
         + Si la palabra se encontró en ListaC1 se retorna un 2
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture23.png)
     - Con la variable que creamos para guardar el resultado de búsqueda hacemos lo siguiente, preguntamos si el retorno de la función en paralelo es 1 o 2, como la función Map devuelve una lista con los resultados de las 10 palabras, debe recorrer la variable resultado para ver quienes son de retorno 1 y quienes del 2. Seguidamente preguntamos dos cosas:
         + Si el retorno es 1: Se aumenta la variable cantD +1 
         + Si el retorno es 2: Se aumenta la variable cantS +1 
     - Teniendo esa información solo nos queda aplicar el Bayes como tal con los datos enviados, la formula seria
-probabilidadD = pVd  *   cantD / cant1
-probabilidadS = pVs * cantS / cant2
+        probabilidadD = pVd  *   cantD / cant1
+        probabilidadS = pVs * cantS / cant2
+
 Teniendo estas probabilidades podemos ver si el nuevo URL según la fórmula de Bayes es clasificado en la categoría 1 o es clasificado en la categoría 2
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture24.png)
 
 **NOTA: Si se descarga el proyecto debemos instalar las dependencias necesarias y cambiar la conexion con sus datos locales, véase la sección de Dependencias.**
+
 GITHUB: https://github.com/IanVargas1/clasificador-bayesiano/blob/master/README.md 
 
 ### Funcion de Bayes
