@@ -23,11 +23,11 @@
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture6.png)
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture7.png)
 ###     Finalmente se crean dos funciones de suma importancia para la interfaz gráfica que se va desarrollar, estos métodos se utilizan para almacenar los links según el resultado de su categorización en la base de datos con la tabla resultados, el método categorizar recibe el link y el nombre de la categoría resultante después de su análisis mediante el webScraping. La segunda función llenarPalabrasCategorizadas es para guardar la lista de palabras que fueron categorizadas en las temáticas correspondientes, este resultado se guarda en la tabla resultados, es decir para cada link guardamos lo siguiente:
-###     1- El link de referencia 
-###     2- El html del WebScraping 
-###     3- La categoría 
-###     4- La lista de palabras de la categorización 1 con la cantidad de repeticiones por palabra.
-###     5- La lista de palabras de la categorización 2 con la cantidad de repeticiones por palabra.
+1. El link de referencia 
+2. El html del WebScraping 
+3. La categoría 
+4. La lista de palabras de la categorización 1 con la cantidad de repeticiones por palabra.
+5. La lista de palabras de la categorización 2 con la cantidad de repeticiones por palabra.
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture8.png)
 ### Para la clase webScraping se requieren algunas importaciones importantes, primero necesitamos conectarnos a la base de datos donde están almacenados los url a consultar, para esto realizamos una petición a la clase conexion donde realizaremos una nueva conexión a la base de datos para realizar la consulta de petición de urls (import Conexion),  seguidamente una vez obtenemos el resultado del query se nos pidió realizar el primer nivel de multiprocesamiento para consultar cada página y realizar el web scraping, en este nivel se requiere el uso de la librería BeautifulSoup de bs4(from bs4 import BeautifulSoup) y la librería requests(import requests) además para realizar el multiprocesamiento se requiere la librería  ThreadPoolExecutor la cual nos permite crear threads para multiprocesamiento(from concurrent.futures import  ThreadPoolExecutor)
 ### Creamos un método llamado webscraping el cual realiza la solicitud a la base de datos para obtener los 10.000 links, para efectos de prueba se limita la consulta para que devuelva un total de 50 links, ya que el tiempo de consulta es demasiado elevado con 10.000 lo que dificulta el avance del proyecto en prueba y error. Seguidamente se crea un ejecutor con un total de 3 hilos para ser usados a continuación. El procedimiento es el siguiente:
