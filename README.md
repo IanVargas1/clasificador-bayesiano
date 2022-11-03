@@ -62,14 +62,22 @@ El método extraer es la función más importante en este procedimiento ya que e
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture11.png)
 
 En la clase Bayes ocurre todo el procedimiento de preparación para el teorema de bayes, esta clase hace uso de las demás clases para obtener los datos necesarios para el teorema, además acá se realiza el segundo nivel de multiprocesamiento donde al ingresar un nuevo link a la base de datos este tiene que ser parseado y categorizado según la historia, en este caso la historia es el total de información que obtuvimos con el webScraping de los 10.000  links. 
+
 ## Dependencias 
 Primero crear un entorno virtual, Si no se tiene virtualenv hay que correr 
+
 > pip install virtualenv
+
 luego hay que activar el entorno virtual con 
+
 > .\env\Scripts\activate
+
 Si sale el (env) al inicio significa que ya estamos en el entorno virtual
+
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture12.png)
+
 luego en el entorno virtual se instalan las demás dependencias
+
 > pip install flask
 ###
 > pip install partial
@@ -85,8 +93,10 @@ luego en el entorno virtual se instalan las demás dependencias
 > pip install requests
 ###
 > pip install ThreadPoolExecutor
+
 Ahora para levantar el servidor y correr la aplicación se ejecuta 
 > python .\app\app.py
+
 Importante: siempre ejecutar la línea que levanta el servidor en el entorno virtual ya que sino no tendría las dependencias necesarias.
 **Nota: cuando ocurren errores en el código se cae el servidor entonces tenemos que volver a correr la línea >python .\app\app.py  en el entorno virtual.**
 
