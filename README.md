@@ -63,7 +63,7 @@ El método extraer es la función más importante en este procedimiento ya que e
 1. Se obtiene el link enviado desde WebScraping 
 2. Se realiza la petición para obtener la página con requests
 3. Se parsea la con BeautifulSoup para obtener el contenido en formato html 
-4. Se establecen las etiquetas de parseo para desechar lo innecesario, en este caso solicitados todos los "p", "span" y "h1", adicionalmente podemos solicitar los "strong" que también típicamente tienen texto. 
+4. Se establecen las etiquetas de parseo para desechar lo innecesario, en este caso solicitados todos los `<p>`, `<span>` y `<h1>`, adicionalmente podemos solicitar los `<strong>` que también típicamente tienen texto. 
 5. Se crea un string con esa información y se agregan a una lista global la cual serán los resultados finales del WebScraping, esta lista guarda sublistas con el url y la sublista de palabras obtenidas del parseo. 
 
 ![Image text](https://github.com/IanVargas1/clasificador-bayesiano/blob/master/app/img/Picture10.png)
